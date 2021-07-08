@@ -2,14 +2,18 @@ variable "aws_region" {
   type = string
 }
 
+variable "human_accounts" {
+  type        = list
+  description = "create account for human"
+}
+
 variable "robot_account_name" {
   type        = string
   description = "name for robot"
 }
 
-variable "human_accounts" {
-  type        = list
-  description = "create account for human"
+variable "human_group_name" {
+  type        = string
 }
 
 variable "read_group_name" {

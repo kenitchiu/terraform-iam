@@ -9,3 +9,7 @@ output "read_group_names" {
 output "write_group_names" {
   value = module.write_groups.names
 }
+
+output "human_accounts" {
+  value = var.human_accounts
+}
