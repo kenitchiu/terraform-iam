@@ -1,7 +1,8 @@
 data "aws_iam_policy_document" "write" {
+  count = length(var.write_policies)
   statement {
-    actions   = var.write_policy_actions
-    resources = var.write_policy_resources
+    actions   = var.write_policies[count.index].actions
+    resources = var.write_policies[count.index].resources
   }
 
   # permission to operate terraform remote state lock, the resource part need to be modified for fitting the real situation
@@ -16,9 +17,15 @@ data "aws_iam_policy_document" "write" {
   #}
 }
 
+data "aws_iam_policy_document" "combined_write" {
+  source_policy_documents = data.aws_iam_policy_document.write.*.json
+}
+
+
 resource "aws_iam_policy" "write" {
-  name   = var.write_account_name
-  policy = data.aws_iam_policy_document.write.json
+  count = length(var.write_policies)
+  name   = "write_policy_${count.index}"
+  policy = data.aws_iam_policy_document.combined_write.json
 }
 
 data "aws_iam_policy_document" "write_assume_role" {
@@ -51,6 +58,7 @@ resource "aws_iam_role" "write" {
 }
 
 resource "aws_iam_role_policy_attachment" "write" {
+  count = length(var.write_policies)  
   role       = aws_iam_role.write.name
-  policy_arn = aws_iam_policy.write.arn
+  policy_arn = aws_iam_policy.write.*.arn[count.index]
 }

@@ -1,7 +1,8 @@
 data "aws_iam_policy_document" "read" {
+  count = length(var.read_policies)
   statement {
-    actions   = var.read_policy_actions
-    resources = var.read_policy_resources
+    actions   = var.read_policies[count.index].actions
+    resources = var.read_policies[count.index].resources
   }
 
   # permission to operate terraform remote state lock, the resource part need to be modified for fitting the real situation
@@ -16,9 +17,15 @@ data "aws_iam_policy_document" "read" {
   #}
 }
 
+
+data "aws_iam_policy_document" "combined_read" {
+  source_policy_documents = data.aws_iam_policy_document.read.*.json
+}
+
 resource "aws_iam_policy" "read" {
-  name   = var.read_account_name
-  policy = data.aws_iam_policy_document.read.json
+  count = length(var.read_policies)
+  name   = "read_policy_${count.index}"
+  policy = data.aws_iam_policy_document.read.*.json[count.index]
 }
 
 data "aws_iam_policy_document" "read_assume_role" {
@@ -51,6 +58,7 @@ resource "aws_iam_role" "read" {
 }
 
 resource "aws_iam_role_policy_attachment" "read" {
+  count = length(var.read_policies)
   role       = aws_iam_role.read.name
-  policy_arn = aws_iam_policy.read.arn
+  policy_arn = aws_iam_policy.read.*.arn[count.index]
 }

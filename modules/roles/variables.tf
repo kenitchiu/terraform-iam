@@ -33,22 +33,16 @@ variable "robot_account_name" {
   description = ""
 }
 
-variable "read_policy_actions" {
-  type        = list(string)
-  description = ""
+variable "read_policies" {
+  type = list(object({
+    actions = list(string)
+    resources = list(string)
+  }))
 }
 
-variable "read_policy_resources" {
-  type        = list(string)
-  description = ""
-}
-
-variable "write_policy_actions" {
-  type        = list(string)
-  description = ""
-}
-
-variable "write_policy_resources" {
-  type        = list(string)
-  description = ""
+variable "write_policies" {
+  type = list(object({
+    actions = list(string)
+    resources = list(string)
+  }))
 }
