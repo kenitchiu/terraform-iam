@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "combined_read" {
 }
 
 resource "aws_iam_policy" "read" {
-  count = length(var.read_policies)
+  count  = length(var.read_policies)
   name   = "read_policy_${count.index}"
   policy = data.aws_iam_policy_document.read.*.json[count.index]
 }
@@ -52,13 +52,13 @@ data "aws_iam_policy_document" "read_assume_role" {
 }
 
 resource "aws_iam_role" "read" {
-  name               = var.read_account_name
+  name               = var.read_role_name
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.read_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "read" {
-  count = length(var.read_policies)
+  count      = length(var.read_policies)
   role       = aws_iam_role.read.name
   policy_arn = aws_iam_policy.read.*.arn[count.index]
 }

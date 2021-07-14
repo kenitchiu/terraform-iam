@@ -6,18 +6,3 @@
 # Module directory
 .terraform/
 vendor/
-
-# Test
-test/*.log
-
-# IntelliJ
-*.iml
-.idea
-
-# ACS
-_output/
-translations/
-
-# Others
-.DS_Store
-

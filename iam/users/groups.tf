@@ -1,24 +1,27 @@
 module "robot_groups" {
-  source = "./group"
-  group_name = var.robot_group_name
+  source             = "./group"
+  group_name         = var.robot_group_name
+  role_name          = var.robot_role_name
   account_id_mapping = var.account_id_mapping
 }
 
 module "write_groups" {
-  source = "./group"
-  group_name = var.write_group_name
+  source             = "./group"
+  group_name         = var.write_group_name
+  role_name          = var.write_role_name
   account_id_mapping = var.account_id_mapping
 }
 
 module "read_groups" {
-  source = "./group"
-  group_name = var.read_group_name
+  source             = "./group"
+  group_name         = var.read_group_name
+  role_name          = var.read_role_name
   account_id_mapping = var.account_id_mapping
 }
 
 
 resource "aws_iam_group" "human_account" {
-  name  = var.human_group_name
+  name = var.human_group_name
 }
 
 data "aws_iam_policy_document" "human_account" {
@@ -87,8 +90,6 @@ data "aws_iam_policy_document" "human_account" {
     actions = [
       "iam:CreateVirtualMFADevice",
       "iam:DeleteVirtualMFADevice",
-      "iam:RequestSmsMfaRegistration",
-      "iam:FinalizeSmsMfaRegistration",
       "iam:EnableMFADevice",
       "iam:ResyncMFADevice"
     ]
@@ -112,9 +113,9 @@ data "aws_iam_policy_document" "human_account" {
     ]
 
     condition {
-      test = "Bool"
+      test     = "Bool"
       variable = "aws:MultiFactorAuthPresent"
-      values = ["true"]
+      values   = ["true"]
     }
   }
 
@@ -132,9 +133,9 @@ data "aws_iam_policy_document" "human_account" {
     ]
 
     condition {
-      test = "BoolIfExists"
+      test     = "BoolIfExists"
       variable = "aws:MultiFactorAuthPresent"
-      values = ["false"]
+      values   = ["false"]
     }
   }
 

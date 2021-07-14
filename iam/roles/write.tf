@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "combined_write" {
 
 
 resource "aws_iam_policy" "write" {
-  count = length(var.write_policies)
+  count  = length(var.write_policies)
   name   = "write_policy_${count.index}"
   policy = data.aws_iam_policy_document.combined_write.json
 }
@@ -52,13 +52,13 @@ data "aws_iam_policy_document" "write_assume_role" {
 }
 
 resource "aws_iam_role" "write" {
-  name               = var.write_account_name
+  name               = var.write_role_name
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.write_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "write" {
-  count = length(var.write_policies)  
+  count      = length(var.write_policies)
   role       = aws_iam_role.write.name
   policy_arn = aws_iam_policy.write.*.arn[count.index]
 }

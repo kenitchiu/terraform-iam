@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "main" {
 
   statement {
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${element(values(var.account_id_mapping), count.index)}:role/${var.group_name}"]
+    resources = ["arn:aws:iam::${element(values(var.account_id_mapping), count.index)}:role/${var.role_name}"]
   }
 }
 
