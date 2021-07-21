@@ -24,6 +24,18 @@ variable "public_subnets" {
   type        = list(string)
 }
 
+variable "eks_private_subnets" {
+  description = "value"
+  type        = list(string)
+  default     = []
+}
+
+variable "eks_public_subnets" {
+  description = "value"
+  type        = list(string)
+  default     = []
+}
+
 variable "enable_nat_gateway" {
   description = "Enable net gateway or not"
   type        = bool
@@ -44,6 +56,7 @@ variable "tags" {
 
 variable "public_subnet_tags" {
   description = "Tags to apply to public subnets"
+  type = map(string)
   default = {
     "Access" = "Public"
   }
@@ -51,6 +64,7 @@ variable "public_subnet_tags" {
 
 variable "private_subnet_tags" {
   description = "Tags to apply to private subnets"
+  type = map(string)
   default = {
     "Access" = "Private"
   }
@@ -71,4 +85,10 @@ variable "bastion_ami" {
 variable "bastion_public_key" {
   description = "public ssh key to login bastion server"
   type        = string
+}
+
+variable "nat_gateway_ips" {
+  description = "IP list to assigned to NAT gateway."
+  type        = list(string)
+  default     = []
 }

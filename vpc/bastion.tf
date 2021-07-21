@@ -35,6 +35,7 @@ resource "aws_security_group_rule" "bastion_ingress_ssh" {
 }
 
 resource "aws_instance" "bastion" {
+
   ami                         = var.bastion_ami
   associate_public_ip_address = true
   instance_type               = var.bastion_instance_type

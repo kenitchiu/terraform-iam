@@ -43,7 +43,7 @@ resource "aws_iam_role" "gitlab" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
   tags = merge(var.tags, tomap({
     "Name" = "Gitlab S3 role"
-  }))  
+  }))
 }
 
 resource "aws_iam_role_policy_attachment" "s3" {

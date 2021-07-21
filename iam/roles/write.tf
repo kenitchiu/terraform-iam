@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "combined_write" {
 resource "aws_iam_policy" "write" {
   count  = length(var.write_policies)
   name   = "write_policy_${count.index}"
-  policy = data.aws_iam_policy_document.combined_write.json
+  policy = data.aws_iam_policy_document.write.*.json[count.index]
 }
 
 data "aws_iam_policy_document" "write_assume_role" {
